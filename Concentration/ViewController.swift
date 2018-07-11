@@ -10,15 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
+    lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
 
-    @IBOutlet weak var flipCountLabel: UILabel!
+    var numberOfPairsOfCards: Int {
+        return (cardButtons.count + 1) / 2
+    }
 
-    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel!
+
+    @IBOutlet private weak var scoreLabel: UILabel!
     
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet private var cardButtons: [UIButton]!
 
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBAction private func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
@@ -27,14 +31,14 @@ class ViewController: UIViewController {
         }
     }
 
-    @IBAction func newGame(_ sender: UIButton) {
-        game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
+    @IBAction private func newGame(_ sender: UIButton) {
+        game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
         emoji.removeAll()
         emojiChoices = game.themeInUse.emojis
         updateViewFromModel()
     }
 
-    func updateViewFromModel() {
+    private func updateViewFromModel() {
         flipCountLabel.text = "FlipCounts: \(game.flipCount)"
         scoreLabel.text = "Score: \(game.score)"
 
@@ -51,11 +55,11 @@ class ViewController: UIViewController {
         }
     }
 
-    var emojiChoices = ["😀", "😁", "😂", "🤣", "😃", "😄"]
+    private var emojiChoices = ["😀", "😁", "😂", "🤣", "😃", "😄"]
 
-    var emoji = [Int:String]()
+    private var emoji = [Int:String]()
 
-    func emoji(for card: Card) -> String {
+    private func emoji(for card: Card) -> String {
         emojiChoices = game.themeInUse.emojis
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))

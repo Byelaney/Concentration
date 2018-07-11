@@ -22,9 +22,9 @@ struct Card: Hashable
     var isMatched = false
     var identifier: Int
 
-    static var identifierFactory = 0
+    private static var identifierFactory = 0
 
-    static func getUniqueIdentifier() -> Int {
+    private static func getUniqueIdentifier() -> Int {
         Card.identifierFactory += 1
         return identifierFactory
     }
